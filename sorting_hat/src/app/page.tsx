@@ -158,14 +158,7 @@ import db from "./db.json";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
-const houses = [
-  { name: "Gryffindor", trait: "Courage", imageUri: "https://devnet.irys.xyz/2HP5eXEsFigMzxFKnP18Ks3AhxmoKFq3EQzUeKrreBM2" },
-  { name: "Slytherin", trait: "Ambition", imageUri: "https://devnet.irys.xyz/G1K16usjBHnN9d7MPDZR48PXnQxy92Q3BDX5yw29krw2" },
-  { name: "Hufflepuff", trait: "Loyalty", imageUri: "https://devnet.irys.xyz/D2cT6RkM6VVWHLS25XTLMPjCShdYUuZ33bZ73ieFRuSx" },
-  { name: "Ravenclaw", trait: "Wisdom", imageUri: "https://devnet.irys.xyz/3L6VaBR1VPh2hBuNbPjPzgv7kFkdkCBPwvS3dmbBsqUZ" },
-];
-
-async function mintRandomHouseNft(userName: string, userWallet: string) {
+async function mintRandomHouseNft(userName: string,) {
   try {
     const response = await fetch('/api/mint-nft', {
       method: 'POST',

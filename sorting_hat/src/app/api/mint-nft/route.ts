@@ -6,7 +6,6 @@ import {
   createSignerFromKeypair,
   signerIdentity,
   generateSigner,
-  TransactionSignature,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
