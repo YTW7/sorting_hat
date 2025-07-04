@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const dbPath = path.join(process.cwd(), 'db.json');
+const dbPath = path.join(process.cwd(), 'src', 'app', 'db.json');
 const ADMIN_WALLET = process.env.NEXT_PUBLIC_ADMIN; 
 
 type WalletEntry = { address: string };
