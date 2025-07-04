@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import {
   percentAmount,
   publicKey as umiPublicKey,
@@ -123,14 +123,6 @@ export async function POST(req: NextRequest) {
       tokenOwner: umiPublicKey(userWallet)
     }).sendAndConfirm(umi);
     // console.log("createNftResult,",createNftResult.signature)
-
-    // await transferV1(umi, {
-    //   mint: mintKeypair.publicKey,
-    //   authority: signer,
-    //   tokenOwner: umiPublicKey(signer.publicKey),
-    //   destinationOwner: umiPublicKey(userWallet),
-    //   tokenStandard: TokenStandard.NonFungible,
-    // }).sendAndConfirm(umi)
 
     mintedWallets.push(userWallet);
     await fs.writeFile(filePath, JSON.stringify(mintedWallets, null, 2));
