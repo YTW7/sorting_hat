@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     const keypair = umi.eddsa.createKeypairFromSecretKey(
       new Uint8Array(secretKey)
     );
-    const keypairATA = Keypair.fromSecretKey(new Uint8Array(secretKey));
+    // const keypairATA = Keypair.fromSecretKey(new Uint8Array(secretKey));
     const signer = createSignerFromKeypair(umi, keypair);
     umi.use(irysUploader());
     umi.use(signerIdentity(signer));
