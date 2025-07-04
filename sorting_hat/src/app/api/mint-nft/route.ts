@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PublicKey } from "@solana/web3.js";
+import { Keypair, PublicKey } from "@solana/web3.js";
 import {
   percentAmount,
   publicKey as umiPublicKey,
@@ -9,9 +9,12 @@ import {
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
-import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { createNft,  mplTokenMetadata, } from "@metaplex-foundation/mpl-token-metadata";
+import path from "path";
 // import { splAssociatedToken } from '@metaplex-foundation/mpl-essentials';
-
+import { promises as fs } from "fs";
+// import { transferV1 } from '@metaplex-foundation/mpl-core';
+// import { getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 const RPC_ENDPOINT =
   "https://devnet.helius-rpc.com/?api-key=15177c0d-0897-46ea-a2ef-fbf919b9645d";
 const COLLECTION_MINT = new PublicKey(
@@ -48,11 +51,22 @@ const houses = [
 // ✅ Correct handler for App Router
 export async function POST(req: NextRequest) {
   try {
-    const { userName } = await req.json();
+    const { userName, userWallet } = await req.json();
 
     const secretKey = JSON.parse(process.env.WALLET_PK || "[]");
     if (!secretKey.length) {
       throw new Error("Missing WALLET_PK in environment variables");
+    }
+
+    const filePath = path.resolve(process.cwd(), "src/app/minted-wallets.json");
+    const fileData = await fs.readFile(filePath, "utf-8");
+    const mintedWallets = JSON.parse(fileData) as string[];
+    if (mintedWallets.includes(userWallet)) {
+        
+      return NextResponse.json({
+        success: false,
+        error: "This wallet has already minted a house NFT.",
+      }, { status: 403 });
     }
 
     const umi = createUmi(RPC_ENDPOINT);
@@ -61,6 +75,7 @@ export async function POST(req: NextRequest) {
     const keypair = umi.eddsa.createKeypairFromSecretKey(
       new Uint8Array(secretKey)
     );
+    const keypairATA = Keypair.fromSecretKey(new Uint8Array(secretKey));
     const signer = createSignerFromKeypair(umi, keypair);
     umi.use(irysUploader());
     umi.use(signerIdentity(signer));
@@ -105,7 +120,20 @@ export async function POST(req: NextRequest) {
           share: 100,
         },
       ],
+      tokenOwner: umiPublicKey(userWallet)
     }).sendAndConfirm(umi);
+    // console.log("createNftResult,",createNftResult.signature)
+
+    // await transferV1(umi, {
+    //   mint: mintKeypair.publicKey,
+    //   authority: signer,
+    //   tokenOwner: umiPublicKey(signer.publicKey),
+    //   destinationOwner: umiPublicKey(userWallet),
+    //   tokenStandard: TokenStandard.NonFungible,
+    // }).sendAndConfirm(umi)
+
+    mintedWallets.push(userWallet);
+    await fs.writeFile(filePath, JSON.stringify(mintedWallets, null, 2));
 
     return NextResponse.json({
       success: true,
@@ -125,3 +153,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+

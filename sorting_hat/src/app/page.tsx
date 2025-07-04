@@ -1,156 +1,3 @@
-// "use client";
-// import { useState } from "react";
-// import db from "./db.json"
-// import { PublicKey } from "@solana/web3.js";
-// import { createGenericFile, createSignerFromKeypair, percentAmount, signerIdentity } from "@metaplex-foundation/umi";
-// import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
-// import { createUmi } from "@metaplex-foundation/umi-bundle-defaults"
-// import { useWallet } from "@solana/wallet-adapter-react";
-
-
-// export default function Home() {
-//   const [userWallet, setUserWallet]=useState("");
-//   const [userName, setUserName]=useState("");
-//   const [loading, setLoading]=useState(false);
-//   const [isWhitelisted, setIsWhitelisted]=useState(false);
-//   const RPC_ENDPOINT = "https://devnet.helius-rpc.com/?api-key=15177c0d-0897-46ea-a2ef-fbf919b9645d";
-//   const umi = createUmi(RPC_ENDPOINT);
-//   const {wallet, publicKey}=useWallet();
-
-// //   const handleChange= (e: { target: { value: string; }; }) => {
-// //     setUserWallet(e.target.value);
-// // }
-
-// // gryff uri: hhttps://devnet.irys.xyz/2HP5eXEsFigMzxFKnP18Ks3AhxmoKFq3EQzUeKrreBM2
-// // slyth uri: https://devnet.irys.xyz/G1K16usjBHnN9d7MPDZR48PXnQxy92Q3BDX5yw29krw2
-// // raven uri: https://devnet.irys.xyz/3L6VaBR1VPh2hBuNbPjPzgv7kFkdkCBPwvS3dmbBsqUZ
-// // huffle uri: https://devnet.irys.xyz/D2cT6RkM6VVWHLS25XTLMPjCShdYUuZ33bZ73ieFRuSx
-// // collection uri: https://devnet.irys.xyz/3yUNVDJBUDvcszW2XRbAZf5Sz8zrqnKF1RYamuNKifW4
-// const houses = [
-//   {
-//     name: "Gryffindor",
-//     trait: "Courage",
-//     imageUri: "https://devnet.irys.xyz/2HP5eXEsFigMzxFKnP18Ks3AhxmoKFq3EQzUeKrreBM2",
-//   },
-//   {
-//     name: "Slytherin",
-//     trait: "Ambition",
-//     imageUri: "https://devnet.irys.xyz/G1K16usjBHnN9d7MPDZR48PXnQxy92Q3BDX5yw29krw2",
-//   },
-//   {
-//     name: "Hufflepuff",
-//     trait: "Loyalty",
-//     imageUri: "https://devnet.irys.xyz/D2cT6RkM6VVWHLS25XTLMPjCShdYUuZ33bZ73ieFRuSx",
-//   },
-//   {
-//     name: "Ravenclaw",
-//     trait: "Wisdom",
-//     imageUri: "https://devnet.irys.xyz/3L6VaBR1VPh2hBuNbPjPzgv7kFkdkCBPwvS3dmbBsqUZ",
-//   },
-// ];
-// async function mintRandomHouseNft(userName: string, collectionMint: PublicKey) {
-// const selectedHouse = houses[Math.floor(Math.random() * houses.length)];
-
-// const metadata = {
-//   name: `${selectedHouse.name} NFT`,
-//   symbol: "HAT",
-//   description: `An exclusive NFT for ${userName}, placed in ${selectedHouse.name}.`,
-//   image: selectedHouse.imageUri,
-//   attributes: [
-//     { trait_type: "House", value: selectedHouse.name },
-//     { trait_type: selectedHouse.trait, value: "High" },
-//     { trait_type: "Name", value: userName }
-//   ],
-//   properties: {
-//     files: [{ uri: selectedHouse.imageUri, type: "image/png" }],
-//     category: "image"
-//   }
-// };
-// const metadataJson = Buffer.from(JSON.stringify(metadata));
-// const genericMetadata = createGenericFile(metadataJson, "metadata.json", {
-//   contentType: "application/json"
-// });
-// const [metadataUri] = await umi.uploader.upload([genericMetadata]);
-
-// const houseNft = await createNft(umi, {
-//     uri: metadataUri,
-//     name: metadata.name,
-//     symbol: metadata.symbol,
-//     sellerFeeBasisPoints: percentAmount(500),
-//     collection: {
-//       key: collectionMint,
-//       verified: false
-//     },
-//     creators: [
-//       {
-//         address: new PublicKey("EgfqevbTP7QoyUd8egpaCpA888WBLveVS8aPZGzrioJt"),
-//         verified: true,
-//         share: 100
-//       }
-//     ]
-//   }).sendAndConfirm(umi);
-
-//   await setAndVerifyCollection(umi, {
-//     mint: houseNft.nft.publicKey,
-//     collectionMint,
-//     collectionAuthority: signer
-//   }).sendAndConfirm(umi);
-
-//   console.log(`✅ Minted ${selectedHouse.name} NFT for ${userName}`);
-// }
-
-
-// const handleMint=() =>{
-//   try{
-//   //check WL
-//   const isWL =  db.wallets.some((w) => w.address===userWallet);
-//   setIsWhitelisted(isWL);
-
-//   //use random out of 4
-
-//   //mint to collection
-  
-//   //display mint
-//   }
-//   catch{
-   
-//   }
-  
-// }
-
-//   return (
-//     <>
-//     <div>I'm Sorting Hat, and I will place you in of our 4 prestigious houses!</div>
-//     <div>Houses include:</div>
-//     <ul>
-//       <li>Gryffindor</li>
-//       <li>Hufflepuff</li>
-//       <li>Ravenclaw</li>
-//       <li>Slytherin</li>
-//     </ul>
-//     <br/>
-//     <div>Get into one of the prestigious house by minting your exclusive NFT</div>
-//     <br/>
-//      <label htmlFor="username">Builder Name:</label>
-//     <input type="text" id="username" name="username" 
-//       placeholder="Jeff aka Japarjam"
-//       value={userName}
-//       onChange={(e) => setUserName(e.target.value)} 
-//       required/>
-//     <br/>
-//     <label htmlFor="wallet">Wallet:</label>
-//     <input type="text" id="wallet" name="wallet" 
-//       placeholder="Enter here like Efjdh...JHjd"
-//       value={userWallet}
-//       onChange={(e) => setUserWallet(e.target.value)} 
-//       required/>
-//      <button className="bg-green-300" onClick={handleMint}>Mint</button>
-//      {isWhitelisted && <p className="text-green-600">✅ Whitelisted!</p>}
-     
-      
-//     </>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
@@ -158,7 +5,19 @@ import db from "./db.json";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
-async function mintRandomHouseNft(userName: string,) {
+interface NFTData {
+  success: boolean;
+  house: string;
+  mint: string;
+  signature: string;
+  metadataUri: string;
+}
+
+interface NFTDisplayProps {
+  nftData: NFTData | null;
+}
+
+async function mintRandomHouseNft(userName: string, userWallet: string) {
   try {
     const response = await fetch('/api/mint-nft', {
       method: 'POST',
@@ -167,6 +26,7 @@ async function mintRandomHouseNft(userName: string,) {
       },
       body: JSON.stringify({
         userName:userName,
+        userWallet: userWallet
       }),
     });
 
@@ -177,12 +37,100 @@ async function mintRandomHouseNft(userName: string,) {
     return { success: false, error: err?.toString() };
   }
 }
+interface NFTDisplayProps {
+  nftData: NFTData | null;
+}
+// NFT Display Component
+function NFTDisplay({ nftData }: NFTDisplayProps) {
+  if (!nftData) return null;
+
+  const getHouseImage = (houseName: string): string => {
+    const houses = {
+      "Gryffindor": "https://devnet.irys.xyz/2HP5eXEsFigMzxFKnP18Ks3AhxmoKFq3EQzUeKrreBM2",
+      "Slytherin": "https://devnet.irys.xyz/G1K16usjBHnN9d7MPDZR48PXnQxy92Q3BDX5yw29krw2",
+      "Hufflepuff": "https://devnet.irys.xyz/D2cT6RkM6VVWHLS25XTLMPjCShdYUuZ33bZ73ieFRuSx",
+      "Ravenclaw": "https://devnet.irys.xyz/3L6VaBR1VPh2hBuNbPjPzgv7kFkdkCBPwvS3dmbBsqUZ",
+    };
+    return houses[houseName as keyof typeof houses] || "";
+  };
+
+  const getHouseEmoji = (houseName: string): string => {
+    const emojis = {
+      "Gryffindor": "🦁",
+      "Slytherin": "🐍", 
+      "Hufflepuff": "🦡",
+      "Ravenclaw": "🦅"
+    };
+    return emojis[houseName as keyof typeof emojis] || "🎭";
+  };
+
+  return (
+    <div className="mt-6 p-4 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300">
+      <h3 className="text-xl font-bold text-center mb-4">
+        🎉 Your House NFT Has Been Minted!
+      </h3>
+      
+      <div className="flex flex-col items-center space-y-4">
+        {/* NFT Image */}
+        <div className="relative">
+          <img 
+            src={getHouseImage(nftData.house)} 
+            alt={`${nftData.house} House NFT`}
+            className="w-48 h-48 object-cover rounded-lg shadow-lg border-4 border-white"
+            // onError={(e) => {
+            //   e.target.src = "/placeholder-nft.png"; // Fallback image
+            // }}
+          />
+          <div className="absolute -top-2 -right-2 bg-white rounded-full p-2 shadow-lg">
+            <span className="text-2xl">{getHouseEmoji(nftData.house)}</span>
+          </div>
+        </div>
+
+        {/* NFT Details */}
+        <div className="text-center space-y-2">
+          <h4 className="text-lg font-semibold text-purple-800">
+            {getHouseEmoji(nftData.house)} Welcome to {nftData.house}!
+          </h4>
+          
+          <div className="bg-white rounded-lg p-3 shadow-md">
+            <p className="text-sm text-gray-600 mb-1">
+              <span className="font-medium">NFT Address:</span>
+            </p>
+            <p className="text-xs font-mono bg-gray-100 p-2 rounded break-all">
+              {nftData.mint}
+            </p>
+          </div>
+
+          <div className="flex space-x-4 text-sm">
+            <a 
+              href={`https://explorer.solana.com/address/${nftData.mint}?cluster=devnet`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md transition-colors"
+            >
+              🔍 View on Explorer
+            </a>
+            <a 
+              href={nftData.metadataUri}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md transition-colors"
+            >
+              📄 View Metadata
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isWhitelisted, setIsWhitelisted] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
+  const [mintedNFT, setMintedNFT] = useState(null); 
 
   const wallet = useWallet();
   const { publicKey, connected } = wallet;
@@ -190,6 +138,7 @@ export default function Home() {
   const handleMint = async () => {
     setLoading(true);
     setStatusMsg("");
+    setMintedNFT(null);
 
     if (!connected || !publicKey) {
       setStatusMsg("🚫 Please connect your wallet first.");
@@ -215,13 +164,15 @@ export default function Home() {
       return;
     }
 
+    console.log("publicKey.toString()",publicKey.toString())
     try {
-      const result = await mintRandomHouseNft(userName.trim(), publicKey.toBase58());
+      const result = await mintRandomHouseNft(userName.trim(), publicKey.toString());
       
       if (result?.success) {
-        setStatusMsg(`✅ Congratulations! You've been sorted into ${result.house}! 
-          NFT Mint: ${result.mint}
-          Metadata: ${result.metadataUri}`);
+        // setStatusMsg(`✅ Congratulations! You've been sorted into ${result.house}! 
+        //   NFT Mint: ${result.mint}
+        //   Metadata: ${result.metadataUri}`);
+          setMintedNFT(result);
       } else {
         setStatusMsg(`❌ Mint failed: ${result?.error}`);
       }
@@ -261,7 +212,7 @@ export default function Home() {
       <div className="space-y-4">
         <div>
           <label htmlFor="username" className="block text-sm font-medium mb-2">
-            👤 Builder Name:
+            Builder Name:
           </label>
           <input
             type="text"
@@ -277,8 +228,9 @@ export default function Home() {
 
         <div>
           <label htmlFor="wallet" className="block text-sm font-medium mb-2">
-            🦊 Connected Wallet:
+             Connected Wallet:
           </label>
+          <div style={{display:"flex", flexDirection:"row"}}>
           <input
             type="text"
             id="wallet"
@@ -286,6 +238,12 @@ export default function Home() {
             value={publicKey?.toBase58() || "Not connected"}
             readOnly
           />
+                {isWhitelisted && (
+          <p className="text-green-600 text-center font-medium">
+            ✅ Wallet is whitelisted!
+          </p>
+        )}
+        </div>
         </div>
 
         <button
@@ -300,17 +258,16 @@ export default function Home() {
           {loading ? "🔄 Minting..." : "🎩 Mint My House NFT"}
         </button>
 
-        {isWhitelisted && (
-          <p className="text-green-600 text-center font-medium">
-            ✅ Wallet is whitelisted!
-          </p>
-        )}
+
 
         {statusMsg && (
           <div className="mt-4 p-3 border rounded-md">
             <p className="text-sm whitespace-pre-line">{statusMsg}</p>
           </div>
         )}
+
+        {/* Display the minted NFT */}
+        <NFTDisplay nftData={mintedNFT} />
       </div>
     </div>
   );
